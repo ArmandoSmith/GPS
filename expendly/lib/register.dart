@@ -4,7 +4,7 @@ import 'login.dart';
 class RegisterScreen extends StatefulWidget{
   @override
   State createState() => new RegisterScreenState();
-}//LoginScreen
+}//RegisterScreen
 
 class RegisterScreenState extends State<RegisterScreen>{
 

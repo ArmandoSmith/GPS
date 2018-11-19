@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'menu.dart';
 import 'register.dart';
+import 'forgotPassword.dart';
 
 class LoginScreen extends StatefulWidget{
   @override
@@ -81,12 +82,12 @@ class LoginScreenState extends State<LoginScreen>{
                         child: Column(
                           children: <Widget>[
                             new FlatButton(
-                              onPressed: null,/* () {
+                              onPressed:  () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => RegisterScreen()),
+                                  MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
                                 );//Navigator
-                              },//onPressed */
+                              },//onPressed
                               child: new Text(
                                   "¿Olvido su contraseña?",
                                   style: TextStyle(
