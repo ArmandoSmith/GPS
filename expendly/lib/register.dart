@@ -34,7 +34,7 @@ class RegisterScreenState extends State<RegisterScreen>{
         fit: StackFit.expand,
         children: <Widget>[
           new Image.asset(
-            'imagenes/login.png',
+            'imagenes/fondo.png',
             fit: BoxFit.cover,
           ),//Image
           new Center(

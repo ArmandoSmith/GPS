@@ -4,6 +4,9 @@ import 'register.dart';
 import 'forgotPassword.dart';
 
 class LoginScreen extends StatefulWidget{
+
+  static const String routeName = "/login";
+
   @override
   State createState() => new LoginScreenState();
 }//LoginScreen
@@ -36,7 +39,7 @@ class LoginScreenState extends State<LoginScreen>{
         fit: StackFit.expand,
         children: <Widget>[
           new Image.asset(
-            'imagenes/login.png',
+            'imagenes/fondo.png',
             fit: BoxFit.cover,
           ),//Image
           new Column(
