@@ -44,6 +44,9 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
       - imagenes/fondo.png
+      - imagenes/fondo_drawer_header.png
+      - imagenes/fondo_drawer_listtile.png
+      - imagenes/fondo_profile_user.png
       - imagenes/logo.png
       - imagenes/usuario_default.png
 

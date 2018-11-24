@@ -16,6 +16,7 @@ class LoginScreenState extends State<LoginScreen>{
   final FormKey = new GlobalKey<FormState>();
 
   String Usuario, Contrasena;
+  String UsuarioFB, ContrasenaFB;
 
   void ValidarUsuario() {
     final Form = FormKey.currentState;
