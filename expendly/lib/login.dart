@@ -45,11 +45,15 @@ class LoginScreenState extends State<LoginScreen>{
           new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new Image.asset(
-                'imagenes/logo.png',
-              ),//Image
               new Container(
-                padding: const EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(20.0),
+                  child:
+                  new Image.asset(
+                    'imagenes/logo.png',
+                  ),//Image
+              ),//Container
+              new Container(
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                 child: Form(
                   key: FormKey,
                   child: Column(
@@ -57,7 +61,7 @@ class LoginScreenState extends State<LoginScreen>{
                     children: <Widget>[
                       new TextFormField(
                         decoration: new InputDecoration(
-                          icon: Icon(IconData(0xe851, fontFamily: 'MaterialIcons')),
+                          icon: Icon(Icons.account_box),
                           labelText: "Usuario:",
                           fillColor: Colors.white,
                         ),//InputDecoration
@@ -67,7 +71,7 @@ class LoginScreenState extends State<LoginScreen>{
                       ),//TextFormField
                       new TextFormField(
                         decoration: new InputDecoration(
-                          icon: Icon(IconData(0xe88d, fontFamily: 'MaterialIcons')),
+                          icon: Icon(Icons.https),
                           labelText: "Contraseña:",
                           fillColor: Colors.white,
                         ),//InputDecoration

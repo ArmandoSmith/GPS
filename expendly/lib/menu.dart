@@ -4,6 +4,9 @@ import 'purchases.dart';
 import 'login.dart';
 
 class MenuScreen extends StatefulWidget {
+
+  static const String routeName = "/menu";
+
   @override
   State createState() => new MenuScreenState();
 }
@@ -29,6 +32,7 @@ class MenuScreenState extends State<MenuScreen>{
 
     var opciones = [
       headerChild,
+      getNavItem(Icons.inbox, "Principal", MenuScreen.routeName),
       getNavItem(Icons.account_circle, "Perfil", ProfileScreen.routeName),
       getNavItem(Icons.attach_money, "Compras", PurchasesScreen.routeName),
       getNavItem(Icons.exit_to_app, "Cerrar Sesión", LoginScreen.routeName)

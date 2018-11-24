@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+import 'menu.dart';
 import 'profile.dart';
 import 'purchases.dart';
 
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
       title: "Maquina Expendedora",
       home: new LoginScreen(),
       routes: <String, WidgetBuilder>{
+        MenuScreen.routeName: (BuildContext context) => new MenuScreen(),
         ProfileScreen.routeName: (BuildContext context) => new ProfileScreen(),
         PurchasesScreen.routeName: (BuildContext context) => new PurchasesScreen(),
         LoginScreen.routeName: (BuildContext context) => new LoginScreen(),
