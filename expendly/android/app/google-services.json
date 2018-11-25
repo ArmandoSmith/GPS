@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "648130480023",
+    "firebase_url": "https://expendly-9033b.firebaseio.com",
+    "project_id": "expendly-9033b",
+    "storage_bucket": "expendly-9033b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648130480023:android:689c3449584f695a",
+        "android_client_info": {
+          "package_name": "equipof.expendly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648130480023-3pfvl8hqpamt4uf37cgqepu09d9t8jpp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBynOhqD2VTsIHWtz2uEeSCqyxKrV70qxg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
