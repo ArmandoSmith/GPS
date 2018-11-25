@@ -5,7 +5,6 @@ import 'package:expendly/purchases.dart';
 import 'package:expendly/login.dart';
 
 class MyDrawer extends StatefulWidget {
-
   @override
   State createState() => new MyDrawerState();
 }//MyDrawer

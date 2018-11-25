@@ -10,7 +10,7 @@ class RegisterScreenState extends State<RegisterScreen>{
 
   final FormKey = new GlobalKey<FormState>();
 
-  String Nombre, ApellidoP, ApellidoM, FechaNacimiento, Correo, Usuario, Contrasena, ConfirmarContrasena, ValidaContrasena;
+  String Nombre, ApellidoP, ApellidoM, FechaNacimiento, Correo, Contrasena, ConfirmarContrasena, ValidaContrasena;
 
   void ValidarRegistro() {
     final Form = FormKey.currentState;
@@ -92,15 +92,6 @@ class RegisterScreenState extends State<RegisterScreen>{
                     ),//TextFormField
                     new TextFormField(
                       decoration: new InputDecoration(
-                        labelText: "Usuario:",
-                        fillColor: Colors.white,
-                      ),//InputDecoration
-                      keyboardType: TextInputType.text,
-                      validator: (value) => value.isEmpty ? "Debe llenar este campo!" : null,
-                      onSaved: (value) => Usuario = value,
-                    ),//TextFormField
-                    new TextFormField(
-                      decoration: new InputDecoration(
                         labelText: "Contraseña:",
                         fillColor: Colors.white,
                       ),//InputDecoration
@@ -111,8 +102,13 @@ class RegisterScreenState extends State<RegisterScreen>{
                           return "Debe llenar este campo!";
                         }
                         else{
-                          ValidaContrasena = value;
-                          return null;
+                          if(value.length < 6){
+                            return "La contraseña debe ser mayor a 6 digitos!";
+                          }
+                          else{
+                            ValidaContrasena = value;
+                            return null;
+                          }
                         }
                       },
                       onSaved: (value) => Contrasena = value,

@@ -63,7 +63,7 @@ class ProfileScreenState extends State<ProfileScreen>{
                   padding: EdgeInsets.only(top: 15.0, left: 30.0, right: 30.0),
                   child: new Text.rich(
                     TextSpan(
-                      text: 'Usuario:\n',
+                      text: 'Nombre:\n',
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 15.0,
@@ -71,7 +71,7 @@ class ProfileScreenState extends State<ProfileScreen>{
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Mostrar usuario',//agregar $Usuario
+                          text: 'Mostrar nombre',//agregar $Usuario
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
