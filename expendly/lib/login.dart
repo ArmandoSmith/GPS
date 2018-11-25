@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'menu.dart';
 import 'register.dart';
 import 'forgotPassword.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget{
 
@@ -15,21 +16,42 @@ class LoginScreenState extends State<LoginScreen>{
 
   final FormKey = new GlobalKey<FormState>();
 
-  String Usuario, Contrasena;
-  String UsuarioFB, ContrasenaFB;
+  String Correo, Contrasena;
 
-  void ValidarUsuario() {
+  bool ValidarUsuario() {
     final Form = FormKey.currentState;
     if(Form.validate()){
       Form.save();
-      print("El formulario es validado. Usuario: $Usuario, Contraseña: $Contrasena");
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MenuScreen()),
-      );
+
+      print("El formulario es validado. Correo: $Correo, Contraseña: $Contrasena");
+      return true;
     }
     else{
-      print("El formulario es invalido. Usuario: $Usuario, Contraseña: $Contrasena");
+      print("El formulario es invalido. Correo: $Correo, Contraseña: $Contrasena");
+      return false;
+    }
+  }
+
+  void Validar_Enviar() async
+  {
+    if(ValidarUsuario())
+    {
+      try
+      {
+        FirebaseUser usuario = await FirebaseAuth.instance.signInWithEmailAndPassword(email: Correo, password: Contrasena);
+        print('Usuario: ${usuario.uid}');
+
+        //Acceso a la app
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MenuScreen()),
+          );
+      }
+      catch (e)
+      {
+        print('Error: $e');
+        Alerta_DatosIncorrectos();
+      }
     }
   }
 
@@ -63,12 +85,12 @@ class LoginScreenState extends State<LoginScreen>{
                       new TextFormField(
                         decoration: new InputDecoration(
                           icon: Icon(Icons.account_box),
-                          labelText: "Usuario:",
+                          labelText: "Correo:",
                           fillColor: Colors.white,
                         ),//InputDecoration
                         keyboardType: TextInputType.text,
                         validator: (value) => value.isEmpty ? "Campo obligatorio" : null,
-                        onSaved: (value) => Usuario = value,
+                        onSaved: (value) => Correo = value,
                       ),//TextFormField
                       new TextFormField(
                         decoration: new InputDecoration(
@@ -84,7 +106,7 @@ class LoginScreenState extends State<LoginScreen>{
                       new RaisedButton(
                         child: Text("Login"),
                         color: Colors.white,
-                        onPressed: ValidarUsuario,
+                        onPressed: Validar_Enviar,
                       ),//RaisedButton
                       new Center(
                         child: Column(
@@ -131,4 +153,27 @@ class LoginScreenState extends State<LoginScreen>{
       ),//Column
     );//Scaffold
   }//Widget build
+
+  void Alerta_DatosIncorrectos()
+  {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        //Regresar la alerta
+        return AlertDialog(
+          title: new Text("Aviso"),
+          content: new Text("Correo o contraseña incorrectos."),
+          actions: <Widget>[
+            //Botones de la alerta
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }//LoginScreen

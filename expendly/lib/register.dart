@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterScreen extends StatefulWidget{
   @override
@@ -10,20 +11,41 @@ class RegisterScreenState extends State<RegisterScreen>{
 
   final FormKey = new GlobalKey<FormState>();
 
-  String Nombre, ApellidoP, ApellidoM, FechaNacimiento, Correo, Usuario, Contrasena, ConfirmarContrasena, ValidaContrasena;
+  String Nombre, ApellidoP, ApellidoM, FechaNacimiento, Correo, Contrasena, ConfirmarContrasena, ValidaContrasena;
 
-  void ValidarRegistro() {
+  bool ValidarRegistro() {
     final Form = FormKey.currentState;
     if(Form.validate()){
       Form.save();
       print("El formulario es validado.");
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
+      return true;
     }
     else{
       print("El formulario es invalido.");
+      return false;
+    }
+  }
+
+  void Validar_Enviar() async
+  {
+    if(ValidarRegistro())
+    {
+      try
+      {
+        FirebaseUser usuario = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: Correo, password: Contrasena);
+        print('Usuario: ${usuario.uid}');
+
+        //Acceso a la app
+          Navigator.push(
+          context,
+            MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+      }
+      catch (e)
+      {
+        print('Error: $e');
+        Alerta_ErrorServidor();
+      }
     }
   }
 
@@ -92,15 +114,6 @@ class RegisterScreenState extends State<RegisterScreen>{
                     ),//TextFormField
                     new TextFormField(
                       decoration: new InputDecoration(
-                        labelText: "Usuario:",
-                        fillColor: Colors.white,
-                      ),//InputDecoration
-                      keyboardType: TextInputType.text,
-                      validator: (value) => value.isEmpty ? "Debe llenar este campo!" : null,
-                      onSaved: (value) => Usuario = value,
-                    ),//TextFormField
-                    new TextFormField(
-                      decoration: new InputDecoration(
                         labelText: "Contraseña:",
                         fillColor: Colors.white,
                       ),//InputDecoration
@@ -142,7 +155,7 @@ class RegisterScreenState extends State<RegisterScreen>{
                     new RaisedButton(
                       child: Text("Registrar"),
                       color: Colors.white,
-                      onPressed: ValidarRegistro,
+                      onPressed: Validar_Enviar,
                     ),//RaisedButton
                   ],//Column children
                 ),//Column
@@ -153,4 +166,27 @@ class RegisterScreenState extends State<RegisterScreen>{
       ),//Stack
     );//Scaffold
   }//Widget build
+
+  void Alerta_ErrorServidor()
+  {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        //Regresar la alerta
+        return AlertDialog(
+          title: new Text("Aviso"),
+          content: new Text("Hubo un error al intentar registrarse, intente de nuevo."),
+          actions: <Widget>[
+            //Botones de la alerta
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }//LoginScreen
