@@ -10,6 +10,7 @@ class MyDrawer extends StatefulWidget {
 }//MyDrawer
 
 class MyDrawerState extends State<MyDrawer>{
+
   Drawer menuDrawer(BuildContext context){
 
     var headerChild = new DrawerHeader(
@@ -43,7 +44,7 @@ class MyDrawerState extends State<MyDrawer>{
       getNavItem(Icons.exit_to_app, "Cerrar Sesión", LoginScreen.routeName)
     ];
 
-    ListView listView = new ListView(children: opciones);
+    ListView opcionesDrawer = new ListView(children: opciones);
 
     return new Drawer(
       child: new Container(
@@ -53,10 +54,10 @@ class MyDrawerState extends State<MyDrawer>{
             fit: BoxFit.fill,
           ),//DecorationImage
         ),//BoxDecoration
-        child: listView,
+        child: opcionesDrawer,
       ),//Container
     );
-  }
+  }//menuDrawer
 
   @override
   Widget build(BuildContext context) {

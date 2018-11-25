@@ -11,9 +11,6 @@ class PurchasesScreen extends StatefulWidget {
 }
 
 class PurchasesScreenState extends State<PurchasesScreen>{
-
-  int i = 3;
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -36,22 +33,7 @@ class PurchasesScreenState extends State<PurchasesScreen>{
             'imagenes/fondo.png',
             fit: BoxFit.cover,
           ),//Image
-          new Column(
-            children: <Widget>[
-              new MyCard(
-                Fecha: "24/11/2018",
-                Sucursal: "ITT Tomas Aquino",
-                Producto: "Chetos",
-                Precio: "\$15",
-              ),//MyCard
-              new MyCard(
-                Fecha: "23/11/2018",
-                Sucursal: "ITT Tomas Aquino",
-                Producto: "Coca cola",
-                Precio: "\$16",
-              ),//MyCard
-            ],//Column children
-          ),//Column
+          new MyCard(),
         ],//Stack children
       ),//Stack
     );//Scaffold
