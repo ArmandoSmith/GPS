@@ -3,7 +3,6 @@ import 'menu.dart';
 import 'register.dart';
 import 'forgotPassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget{
 
@@ -31,12 +30,6 @@ class LoginScreenState extends State<LoginScreen>{
       print("El formulario es invalido. Correo: $Correo, Contraseña: $Contrasena");
       return false;
     }
-  }
-
-  void ObtenerDatos()
-  {
-    var data = Firestore.instance.collection('usuarios').document('cdWQxG8HRUbbcDZzpn44NO8szai2');
-    print('Datos ${data.toString()}');
   }
   void Validar_Enviar() async
   {
@@ -112,7 +105,7 @@ class LoginScreenState extends State<LoginScreen>{
                       new RaisedButton(
                         child: Text("Login"),
                         color: Colors.white,
-                        onPressed: ObtenerDatos,
+                        onPressed: Validar_Enviar,
                       ),//RaisedButton
                       new Center(
                         child: Column(
