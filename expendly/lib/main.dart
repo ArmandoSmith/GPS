@@ -3,6 +3,8 @@ import 'login.dart';
 import 'menu.dart';
 import 'profile.dart';
 import 'purchases.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(new MyApp());
 
@@ -18,6 +20,7 @@ class MyApp extends StatelessWidget {
         PurchasesScreen.routeName: (BuildContext context) => new PurchasesScreen(),
         LoginScreen.routeName: (BuildContext context) => new LoginScreen(),
       },
+      
     );
   }//Widget build
 }//MyApp

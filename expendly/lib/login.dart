@@ -3,6 +3,7 @@ import 'menu.dart';
 import 'register.dart';
 import 'forgotPassword.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget{
 
@@ -32,6 +33,11 @@ class LoginScreenState extends State<LoginScreen>{
     }
   }
 
+  void ObtenerDatos()
+  {
+    var data = Firestore.instance.collection('usuarios').document('cdWQxG8HRUbbcDZzpn44NO8szai2');
+    print('Datos ${data.toString()}');
+  }
   void Validar_Enviar() async
   {
     if(ValidarUsuario())
@@ -106,7 +112,7 @@ class LoginScreenState extends State<LoginScreen>{
                       new RaisedButton(
                         child: Text("Login"),
                         color: Colors.white,
-                        onPressed: Validar_Enviar,
+                        onPressed: ObtenerDatos,
                       ),//RaisedButton
                       new Center(
                         child: Column(
