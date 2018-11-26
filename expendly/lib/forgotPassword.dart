@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ForgotPasswordScreen extends StatefulWidget{
   @override
@@ -12,18 +13,43 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
 
   String Correo;
 
-  void ValidarRecuperacion() {
+  bool ValidarRecuperacion() 
+  {
     final Form = FormKey.currentState;
-    if(Form.validate()) {
+    if(Form.validate()) 
+    {
       Form.save();
-      print("El formulario es valido.");
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
+      print("El formulario es válido.");
+      print("Correo: ${Correo}");
+      return true;
     }
-    else{
-      print("El formularo es invalido.");
+    else
+    {
+      print("El formularo es inválido.");
+      return false;
+    }
+  }
+
+  void RecuperarPassword() async
+  {
+    if(ValidarRecuperacion())
+    {
+      try
+      {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: Correo);
+        
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
+
+        Alerta_Exito();
+      }
+      catch (e)
+      {
+        print('Error: $e');
+        Alerta_DatosIncorrectos();
+      }
     }
   }
 
@@ -57,7 +83,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
                     new RaisedButton(
                       child: Text("Recuperar contraseña"),
                       color: Colors.white,
-                      onPressed: ValidarRecuperacion,
+                      onPressed: RecuperarPassword,
                     ),//RaisedButton
                   ],//Column children
                 ),//Column
@@ -68,4 +94,51 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen>{
       ),//Stack
     );//Sacaffold
   }//Widget build
+
+  void Alerta_DatosIncorrectos()
+  {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        //Regresar la alerta
+        return AlertDialog(
+          title: new Text("Aviso"),
+          content: new Text("No se ha encontrado un usuario con esa dirección de correo electrónico"),
+          actions: <Widget>[
+            //Botones de la alerta
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void Alerta_Exito()
+  {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        //Regresar la alerta
+        return AlertDialog(
+          title: new Text("Aviso"),
+          content: new Text("Restablecimiento exitoso, en un momento recibirá un correo."),
+          actions: <Widget>[
+            //Botones de la alerta
+            new FlatButton(
+              child: new Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
