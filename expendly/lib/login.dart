@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'menu.dart';
 import 'register.dart';
 import 'forgotPassword.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget{
 
@@ -38,8 +37,8 @@ class LoginScreenState extends State<LoginScreen>{
     {
       try
       {
-        FirebaseUser usuario = await FirebaseAuth.instance.signInWithEmailAndPassword(email: Correo, password: Contrasena);
-        print('Usuario: ${usuario.uid}');
+        //FirebaseUser usuario = await FirebaseAuth.instance.signInWithEmailAndPassword(email: Correo, password: Contrasena);
+        //print('Usuario: ${usuario.uid}');
 
         //Acceso a la app
         Navigator.push(

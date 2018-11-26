@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterScreen extends StatefulWidget{
   @override
@@ -32,8 +32,8 @@ class RegisterScreenState extends State<RegisterScreen>{
     {
       try
       {
-        FirebaseUser usuario = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: Correo, password: Contrasena);
-        print('Usuario: ${usuario.uid}');
+        //FirebaseUser usuario = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: Correo, password: Contrasena);
+        //print('Usuario: ${usuario.uid}');
 
         //Acceso a la app
           Navigator.push(

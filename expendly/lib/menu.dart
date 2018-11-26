@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'myWidgets/MyDrawer.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class MenuScreen extends StatefulWidget {
 
@@ -33,9 +34,38 @@ class MenuScreenState extends State<MenuScreen>{
         fit: StackFit.expand,
         children: <Widget>[
           new Image.asset(
-            'imagenes/fondo.png',
+            'imagenes/fondo_drawer_header.png',
             fit: BoxFit.cover,
           ),//Image
+          new Column(
+            children: <Widget>[
+              new Image.asset(
+                'imagenes/banda.png',
+                fit: BoxFit.cover,
+              ),
+              new CarouselSlider(
+                items: [1,2,3].map((i) {
+                  return new Builder(
+                    builder: (BuildContext context) {
+                      return new Container(
+                        width: MediaQuery.of(context).size.width,
+                        margin: new EdgeInsets.symmetric(horizontal: 10.0),
+                        child: new Image.asset(
+                          'imagenes/logo.png',
+                        ),//Image.asset
+                      );//Container
+                    },//builder
+                  );//Builder
+                }).toList(),
+                height: 200.0,
+                autoPlay: true
+              ),//CarouselSlider
+              new Image.asset(
+                'imagenes/banda.png',
+                fit: BoxFit.cover,
+              ),
+            ],//Column children
+          ),//Column
         ],//Stack children
       ),//Stack
     );//Scaffold
