@@ -5,32 +5,28 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class MenuScreen extends StatefulWidget {
-
   static const String routeName = "/menu";
 
   @override
   State createState() => new MenuScreenState();
 }
 
-class MenuScreenState extends State<MenuScreen>{
+class MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        leading: Builder(
-          builder: (BuildContext context) {
-            return new IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                }
-            );//leading: IconButton
-          }
-        ),
+        leading: Builder(builder: (BuildContext context) {
+          return new IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              }); //leading: IconButton
+        }),
         /*actions: <Widget>[
 
         ],//Actions*/
-      ),//AppBar
+      ), //AppBar
       drawer: MyDrawer(),
       body: new Stack(
         fit: StackFit.expand,
@@ -38,7 +34,7 @@ class MenuScreenState extends State<MenuScreen>{
           new Image.asset(
             'imagenes/fondo_drawer_header.png',
             fit: BoxFit.cover,
-          ),//Image
+          ), //Image
           new Column(
             children: <Widget>[
               new Image.asset(
@@ -46,36 +42,74 @@ class MenuScreenState extends State<MenuScreen>{
                 fit: BoxFit.cover,
               ),
               new CarouselSlider(
-                items: [1,2,3].map((i) {
-                  return new Builder(
-                    builder: (BuildContext context) {
-                      return new Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: new EdgeInsets.symmetric(horizontal: 10.0),
-                        child: new Image.asset(
-                          'imagenes/logo.png',
-                        ),//Image.asset
-                      );//Container
-                    },//builder
-                  );//Builder
-                }).toList(),
-                height: 200.0,
-                autoPlay: true
-              ),//CarouselSlider
+                  items: [1, 2, 3].map((i) {
+                    return new Builder(
+                      builder: (BuildContext context) {
+                        return new Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: new EdgeInsets.symmetric(horizontal: 10.0),
+                          child: new Image.asset(
+                            'imagenes/logo.png',
+                          ), //Image.asset
+                        ); //Container
+                      }, //builder
+                    ); //Builder
+                  }).toList(),
+                  height: 200.0,
+                  autoPlay: true), //CarouselSlider
               new Image.asset(
                 'imagenes/banda.png',
                 fit: BoxFit.cover,
               ),
-            ],//Column children
-          ),//Column
-        ],//Stack children
-      ),//Stack
-    );//Scaffold
-  }//Widget build
+              new FutureBuilder(
+                future: getMaquinaProducto(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) print(snapshot.error);
 
-  Future<List> getData() async {
-    final response = await http.get("http://REEMPLAZAR URL!");
+                  return snapshot.hasData 
+                    ? new MaquinaProducto(list: snapshot.data,) 
+                    : new Center(
+                      child: new CircularProgressIndicator(),
+                    );//Center
+                }, //builder
+              ), //FutureBuidler
+            ], //Column children
+          ), //Column
+        ], //Stack children
+      ), //Stack
+    ); //Scaffold
+  } //Widget build
+
+  Future<List> getMaquinaProducto() async {
+    final response = await http.get("http://expendly.000webhostapp.com/Obtener_Peticion.php");
     return json.decode(response.body);
+  } //Future<List> getData()
 
-  }//Future<List> getData()
-}//MenuScreen
+} //MenuScreen
+
+class MaquinaProducto extends StatelessWidget {
+  
+  MaquinaProducto({this.list});
+  List list;
+
+  @override
+  Widget build(BuildContext context) {
+    return new ListView.builder(
+      itemCount: list == null 
+        ? 0 
+        : list.length,
+      itemBuilder: (context, i) {
+        return new Column(
+          children: <Widget>[
+            new Container(
+              padding: EdgeInsets.all(10.0),
+              child: new Center(
+                child: new Text(list[i]['CANAL']),
+            ),//Center,
+            ),//Container
+          ],//Column children
+        );//Column
+      },//itemBuilder
+    );//ListView.builder
+  }
+}
