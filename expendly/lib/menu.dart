@@ -83,14 +83,15 @@ class MenuScreenState extends State<MenuScreen> {
   Future<List> getMaquinaProducto() async {
     final response = await http.get("http://expendly.000webhostapp.com/Obtener_Peticion.php");
     return json.decode(response.body);
-  } //Future<List> getData()
+  } //Future<List> getMaquinaProducto()
 
 } //MenuScreen
 
 class MaquinaProducto extends StatelessWidget {
-  
+
+  final List list;
+
   MaquinaProducto({this.list});
-  List list;
 
   @override
   Widget build(BuildContext context) {
