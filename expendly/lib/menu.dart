@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'myWidgets/MyDrawer.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MenuScreen extends StatefulWidget {
 
@@ -70,4 +72,10 @@ class MenuScreenState extends State<MenuScreen>{
       ),//Stack
     );//Scaffold
   }//Widget build
+
+  Future<List> getData() async {
+    final response = await http.get("http://REEMPLAZAR URL!");
+    return json.decode(response.body);
+
+  }//Future<List> getData()
 }//MenuScreen
