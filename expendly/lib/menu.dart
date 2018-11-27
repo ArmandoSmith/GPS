@@ -12,6 +12,12 @@ class MenuScreen extends StatefulWidget {
 }
 
 class MenuScreenState extends State<MenuScreen> {
+
+  Future<List> getMaquinaProducto() async {
+    final response = await http.get("http://expendly.000webhostapp.com/Obtener_Peticion.php");
+    return json.decode(response.body);
+  } //Future<List> getMaquinaProducto()
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -35,56 +41,23 @@ class MenuScreenState extends State<MenuScreen> {
             'imagenes/fondo_drawer_header.png',
             fit: BoxFit.cover,
           ), //Image
-          new Column(
-            children: <Widget>[
-              new Image.asset(
-                'imagenes/banda.png',
-                fit: BoxFit.cover,
-              ),
-              new CarouselSlider(
-                  items: [1, 2, 3].map((i) {
-                    return new Builder(
-                      builder: (BuildContext context) {
-                        return new Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: new EdgeInsets.symmetric(horizontal: 10.0),
-                          child: new Image.asset(
-                            'imagenes/logo.png',
-                          ), //Image.asset
-                        ); //Container
-                      }, //builder
-                    ); //Builder
-                  }).toList(),
-                  height: 200.0,
-                  autoPlay: true), //CarouselSlider
-              new Image.asset(
-                'imagenes/banda.png',
-                fit: BoxFit.cover,
-              ),
-              new FutureBuilder(
-                future: getMaquinaProducto(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) print(snapshot.error);
-
-                  return snapshot.hasData 
-                    ? new MaquinaProducto(list: snapshot.data,) 
-                    : new Center(
-                      child: new CircularProgressIndicator(),
-                    );//Center
-                }, //builder
-              ), //FutureBuidler
-            ], //Column children
-          ), //Column
-        ], //Stack children
-      ), //Stack
+          new Container(
+            child: new FutureBuilder(
+              future: getMaquinaProducto(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) print(snapshot.error);
+                return snapshot.hasData 
+                  ? new MaquinaProducto(list: snapshot.data,)
+                  : new Center(
+                    child: new CircularProgressIndicator(),
+                  );//Center
+              }, //builder
+            ),//FutureBuidler,
+          ),//Container
+        ],//Stack children
+      ),//Stack
     ); //Scaffold
   } //Widget build
-
-  Future<List> getMaquinaProducto() async {
-    final response = await http.get("http://expendly.000webhostapp.com/Obtener_Peticion.php");
-    return json.decode(response.body);
-  } //Future<List> getMaquinaProducto()
-
 } //MenuScreen
 
 class MaquinaProducto extends StatelessWidget {
@@ -100,19 +73,42 @@ class MaquinaProducto extends StatelessWidget {
         ? 0 
         : list.length,
       itemBuilder: (context, i) {
-        return new Text("${list[i]['CANAL']}");
-        /*
-          new Column(
+        return new Column(
           children: <Widget>[
+            new Image.asset(
+                'imagenes/banda.png',
+                fit: BoxFit.cover,
+              ),
+            new CarouselSlider(
+              items: [1, 2, 3].map((i) {
+                return new Builder(
+                  builder: (BuildContext context) {
+                    return new Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: new EdgeInsets.symmetric(horizontal: 10.0),
+                      child: new Image.asset(
+                        'imagenes/logo.png',
+                      ), //Image.asset
+                    ); //Container
+                  }, //builder
+                ); //Builder
+              }).toList(),
+              height: 200.0,
+              autoPlay: true
+            ), //CarouselSlider
+            new Image.asset(
+              'imagenes/banda.png',
+              fit: BoxFit.cover,
+            ),
             new Container(
               padding: EdgeInsets.all(10.0),
               child: new Center(
-                child: new Text(list[i]['CANAL']),
-            ),//Center,
+                child: new Text("${list[i]['CANAL']}"),
+              ),//Center,
             ),//Container
           ],//Column children
-        );//Column*/
+        );//Column
       },//itemBuilder
     );//ListView.builder
-  }
+  }//Widget build
 }
