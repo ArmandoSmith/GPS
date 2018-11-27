@@ -100,7 +100,9 @@ class MaquinaProducto extends StatelessWidget {
         ? 0 
         : list.length,
       itemBuilder: (context, i) {
-        return new Column(
+        return new Text("${list[i]['CANAL']}");
+        /*
+          new Column(
           children: <Widget>[
             new Container(
               padding: EdgeInsets.all(10.0),
@@ -109,7 +111,7 @@ class MaquinaProducto extends StatelessWidget {
             ),//Center,
             ),//Container
           ],//Column children
-        );//Column
+        );//Column*/
       },//itemBuilder
     );//ListView.builder
   }
