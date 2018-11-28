@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'login.dart';
+
 class RegisterScreen extends StatefulWidget{
   @override
   State createState() => new RegisterScreenState();
@@ -34,7 +36,7 @@ class RegisterScreenState extends State<RegisterScreen>{
       {
         FirebaseUser usuario = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: Correo, password: Contrasena);
         print('Usuario: ${usuario.uid}');
-
+        
         //Acceso a la app
           Navigator.push(
           context,
@@ -45,6 +47,7 @@ class RegisterScreenState extends State<RegisterScreen>{
       {
         print('Error: $e');
         Alerta_ErrorServidor();
+        
       }
     }
   }
