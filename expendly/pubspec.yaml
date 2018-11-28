@@ -44,6 +44,8 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
       - imagenes/banda.png
+      - imagenes/carlos_v.png
+      - imagenes/carlos_v_sin_azucar.png
       - imagenes/fondo.png
       - imagenes/fondo_drawer_header.png
       - imagenes/fondo_drawer_listtile.png
