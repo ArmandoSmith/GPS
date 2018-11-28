@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'myWidgets/MyDrawer.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ProfileScreen extends StatefulWidget {
 
@@ -11,8 +13,38 @@ class ProfileScreen extends StatefulWidget {
 
 class ProfileScreenState extends State<ProfileScreen>{
 
-  String Usuario, Correo, Tarjeta;
+  String Nombre, Correo, Tarjeta, id_cte = "cdWQxG8HRUbbcDZzpn44NO8szai2";
   double ScreenHeight;
+
+  var _isLoading = false;
+
+  List dataUsuario;
+
+  Future<String> getUsuario() async {
+    var response = await http.get("http://expendly.000webhostapp.com/PANTALLAPRINCIPAL_CONSULTA_CLIENTETARJETA.php?ID_CLIENTE=$id_cte");
+
+    setState(() {
+
+      dataUsuario = json.decode(response.body);
+
+      if (dataUsuario != null) {
+        var _isLoading = true;
+        Nombre = dataUsuario[0]['NOMBRE'];
+        Correo = dataUsuario[0]['CORREO_E'];
+        Tarjeta = dataUsuario[0]['ID_TARJETA'];
+      }
+    });
+    
+    print(dataUsuario);
+  } //Future<String> getUsuario
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      getUsuario();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +103,7 @@ class ProfileScreenState extends State<ProfileScreen>{
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Mostrar nombre',//agregar $Usuario
+                          text: '$Nombre',//agregar $Nombre
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
@@ -94,7 +126,7 @@ class ProfileScreenState extends State<ProfileScreen>{
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: 'Mostrar correo',//agregar $Correo
+                          text: '$Correo',//agregar $Correo
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
@@ -117,7 +149,7 @@ class ProfileScreenState extends State<ProfileScreen>{
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                          text: '****-****-****-1234',//agregar $Tarjeta
+                          text: '$Tarjeta',//agregar $Tarjeta
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
@@ -129,10 +161,10 @@ class ProfileScreenState extends State<ProfileScreen>{
                   ),//Text.rich,
                 ),//Container
               ],//Column children
-            ),//Column,
+            ),//Column
           ),//Container
         ],//Stack children
       ),//Stack
     );//Scaffold
   }//Widget build
-}//MenuScreen
+}

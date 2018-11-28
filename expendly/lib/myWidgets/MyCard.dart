@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class MyCard extends StatefulWidget {
   @override
@@ -8,299 +9,148 @@ class MyCard extends StatefulWidget {
 
 class MyCardState extends State<MyCard> {
 
-  ListView listaCompras(BuildContext context) {
-    Card getComprasCard(String fecha, String sucursal, String producto, String precio) {
-      return new Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: new Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            new Container(
-              padding: EdgeInsets.all(10.0),
-              child: new Center(
-                child: new Text(
-                  "Fecha: $fecha",
-                  style: TextStyle(
-                    color: Colors.black45,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ), //TxtStyle
-                ), //Text
-              ), //Center
-            ), //Container
-            new Container(
-              padding: EdgeInsets.all(10.0),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(
-                    "Sucursal de compra ",
-                    style: TextStyle(
-                      color: Colors.black45,
-                      fontSize: 15.0,
-                      fontWeight: FontWeight.bold,
-                    ), //TextStyle
-                  ), //Text
-                  new Text(
-                    "$sucursal",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.0,
-                    ), //TextStyle
-                  ), //Text
-                ], //Column children
-              ), //Column
-            ), //Container
-            new Container(
-              padding: EdgeInsets.all(10.0),
-              child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Row(
-                    children: <Widget>[
-                      new Container(
-                        padding: EdgeInsets.only(right: 10.0),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Text(
-                              "Producto",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                              ), //TextStyle
-                            ), //Text
-                            new Text(
-                              "$producto",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                              ), //TextStyle
-                            ), //Text
-                          ], //Column children
-                        ), //Column
-                      ), //Container
-                      new Container(
-                        padding: EdgeInsets.only(right: 10.0),
-                        child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            new Text(
-                              "Precio",
-                              style: TextStyle(
-                                color: Colors.black45,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                              ), //TextStyle
-                            ), //Text
-                            new Text(
-                              "$precio",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20.0,
-                              ), //TextStyle
-                            ), //Text
-                          ], //Column children
-                        ), //Column
-                      ), //Container
-                    ], //Row children
-                  ), //Row
-                ], //Column children
-              ), //Column
-            ), //Container
-          ], //Collumn children
-        ), //Column
-      ); //Card
-    } //getComprasCard
-
-    List<String> Fechas = [
-      "24/11/2018",
-      "24/11/2018",
-      "24/11/2018",
-      "24/11/2018",
-      "24/11/2018",
-      "24/11/2018",
-      "24/11/2018",
-      "24/11/2018",
-      "24/11/2018",
-      "24/11/2018",
-    ];
-
-    List<String> Sucursales = [
-      "ITT Tomas Aquino",
-      "ITT Tomas Aquino",
-      "ITT Tomas Aquino",
-      "ITT Tomas Aquino",
-      "ITT Tomas Aquino",
-      "ITT Tomas Aquino",
-      "ITT Tomas Aquino",
-      "ITT Tomas Aquino",
-      "ITT Tomas Aquino",
-      "ITT Tomas Aquino",
-    ];
-
-    List<String> Productos = [
-      "Chetos",
-      "Coca Cola",
-      "Chetos",
-      "Coca Cola",
-      "Coca Cola",
-      "Chetos",
-      "Chetos",
-      "Coca Cola",
-      "Chetos",
-      "Coca Cola",
-    ];
-
-    List<String> Precios = [
-      "\$15",
-      "\$12",
-      "\$15",
-      "\$12",
-      "\$12",
-      "\$15",
-      "\$15",
-      "\$12",
-      "\$15",
-      "\$12",
-    ];
-
-    List<Card> opciones = new List<Card>();
-
-    for (var i = 0; i < 10; i++){
-      opciones.add(getComprasCard(Fechas[i], Sucursales[i], Productos[i], Precios[i]));
-    };
-
-    return ListView(
-      children: opciones,
-    );
-  }
+  Future<List> getCompras() async {
+    final response = await http.get("http://expendly.000webhostapp.com/Obtener_Peticion.php");
+    return json.decode(response.body);
+  } //Future<List> getMaquinaProducto()
 
   @override
   Widget build(BuildContext context) {
-    return listaCompras(context);
+    return new FutureBuilder(
+      future: getCompras(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
+        return snapshot.hasData 
+          ? new Compras(list: snapshot.data,)
+          : new Center(
+            child: new CircularProgressIndicator(),
+          );//Center
+      }, //builder
+    );//FutureBuidler;
   } //Widget build
 }//MyCardState
 
+class Compras extends StatelessWidget {
 
-/*
-class MyCard extends StatelessWidget{
+  final List list;
 
-  MyCard({this.Fecha, this.Sucursal, this.Producto, this.Precio});
+  Compras({this.list});
 
-  final String Fecha, Sucursal, Producto, Precio;
+  MyCardState mcs = new MyCardState();
 
   @override
   Widget build(BuildContext context) {
-    return new Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          new Container(
-            padding: EdgeInsets.all(10.0),
-            child: new Center(
-              child: new Text(
-                "Fecha: $Fecha",
-                style: TextStyle(
-                  color: Colors.black45,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),//TxtStyle
-              ),//Text
-            ),//Center
-          ),//Container
-          new Container(
-            padding: EdgeInsets.all(10.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Text(
-                  "Sucursal de compra ",
-                  style: TextStyle(
-                    color: Colors.black45,
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.bold,
-                  ),//TextStyle
-                ),//Text
-                new Text(
-                  "$Sucursal",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                  ),//TextStyle
-                ),//Text
-              ],//Column children
-            ),//Column
-          ),//Container
-          new Container(
-            padding: EdgeInsets.all(10.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                new Row(
+    return new ListView.builder(
+      itemCount: list == null 
+        ? 0 
+        : list.length,
+      itemBuilder: (context, i) {
+        return new Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: new Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new Container(
+                padding: EdgeInsets.all(10.0),
+                child: new Center(
+                  child: new Text(
+                    "Fecha: ${list[i]['CANAL']}",
+                    style: TextStyle(
+                      color: Colors.black45,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ), //TxtStyle
+                  ), //Text
+                ), //Center
+              ), //Container
+              new Container(
+                padding: EdgeInsets.all(10.0),
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    new Container(
-                      padding: EdgeInsets.only(right: 10.0),
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new Text(
-                            "Producto",
-                            style: TextStyle(
-                              color: Colors.black45,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                            ),//TextStyle
-                          ),//Text
-                          new Text(
-                            "$Producto",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.0,
-                            ),//TextStyle
-                          ),//Text
-                        ],//Column children
-                      ),//Column
-                    ),//Container
-                    new Container(
-                      padding: EdgeInsets.only(right: 10.0),
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          new Text(
-                            "Precio",
-                            style: TextStyle(
-                              color: Colors.black45,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.bold,
-                            ),//TextStyle
-                          ),//Text
-                          new Text(
-                            "$Precio",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20.0,
-                            ),//TextStyle
-                          ),//Text
-                        ],//Column children
-                      ),//Column
-                    ),//Container
-                  ],//Row children
-                ),//Row
-              ],//Column children
-            ),//Column
-          ),//Container
-        ],//Collumn children
-      ),//Column
-    );//Card
-  }//Widget buil
-}//MyCard
-*/
+                    new Text(
+                      "Sucursal de compra ",
+                      style: TextStyle(
+                        color: Colors.black45,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ), //TextStyle
+                    ), //Text
+                    new Text(
+                      "${list[i]['CANAL']}",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                      ), //TextStyle
+                    ), //Text
+                  ], //Column children
+                ), //Column
+              ), //Container
+              new Container(
+                padding: EdgeInsets.all(10.0),
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Row(
+                      children: <Widget>[
+                        new Container(
+                          padding: EdgeInsets.only(right: 10.0),
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text(
+                                "Producto",
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ), //TextStyle
+                              ), //Text
+                              new Text(
+                                "${list[i]['CANAL']}",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                ), //TextStyle
+                              ), //Text
+                            ], //Column children
+                          ), //Column
+                        ), //Container
+                        new Container(
+                          padding: EdgeInsets.only(right: 10.0),
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              new Text(
+                                "Precio",
+                                style: TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                ), //TextStyle
+                              ), //Text
+                              new Text(
+                                "${list[i]['CANAL']}",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                ), //TextStyle
+                              ), //Text
+                            ], //Column children
+                          ), //Column
+                        ), //Container
+                      ], //Row children
+                    ), //Row
+                  ], //Column children
+                ), //Column
+              ), //Container
+            ], //Collumn children
+          ), //Column
+        );
+      },//itemBuilder
+    );//ListView.builder
+  }//Widget build
+}
